@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SOUTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkplaceID" Type="int" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" MaxLength="50" />
+          <Property Name="SNILS" Type="nchar" MaxLength="13" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="ParrentDepartmentID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Organization">
+          <Key>
+            <PropertyRef Name="OrganizationID" />
+          </Key>
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="NameShort" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="AdressFact" Type="nvarchar" MaxLength="250" />
+          <Property Name="DirectorFIO" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Telephone" Type="nchar" MaxLength="25" Nullable="false" />
+          <Property Name="Fax" Type="nchar" MaxLength="25" />
+          <Property Name="SOUTid" Type="bigint" Nullable="false" />
+          <Property Name="INN" Type="bigint" Nullable="false" />
+          <Property Name="OKPO" Type="bigint" Nullable="false" />
+          <Property Name="OKOGU" Type="bigint" Nullable="false" />
+          <Property Name="OKVED" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="OKTMO" Type="bigint" Nullable="false" />
+          <Property Name="OGRN" Type="bigint" Nullable="false" />
+          <Property Name="KPP" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Workplaces">
+          <Key>
+            <PropertyRef Name="WorkplaceID" />
+          </Key>
+          <Property Name="WorkplaceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Departments_Organization">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+          <End Role="Departments" Type="Self.Departments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="OrganizationID" />
+            </Principal>
+            <Dependent Role="Departments">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Departments_Self">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+          <End Role="Departments1" Type="Self.Departments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Departments1">
+              <PropertyRef Name="ParrentDepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Workplaces">
+          <End Role="Workplaces" Type="Self.Workplaces" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workplaces">
+              <PropertyRef Name="WorkplaceID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="WorkplaceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Workplaces_Departments">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="1" />
+          <End Role="Workplaces" Type="Self.Workplaces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Workplaces">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SOUTModelStoreContainer">
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="Persons" store:Type="Tables" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="Structure" store:Type="Tables" />
+          <EntitySet Name="Organization" EntityType="Self.Organization" Schema="Structure" store:Type="Tables" />
+          <EntitySet Name="Workplaces" EntityType="Self.Workplaces" Schema="Structure" store:Type="Tables" />
+          <AssociationSet Name="FK_Departments_Organization" Association="Self.FK_Departments_Organization">
+            <End Role="Organization" EntitySet="Organization" />
+            <End Role="Departments" EntitySet="Departments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Departments_Self" Association="Self.FK_Departments_Self">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Departments1" EntitySet="Departments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Workplaces" Association="Self.FK_Employees_Workplaces">
+            <End Role="Workplaces" EntitySet="Workplaces" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Workplaces_Departments" Association="Self.FK_Workplaces_Departments">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Workplaces" EntitySet="Workplaces" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SOUTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkplaceID" Type="Int32" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SNILS" Type="String" MaxLength="13" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Workplaces" Relationship="Self.FK_Employees_Workplaces" FromRole="Employees" ToRole="Workplaces" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <Property Name="ParrentDepartmentID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Organization" Relationship="Self.FK_Departments_Organization" FromRole="Departments" ToRole="Organization" />
+          <NavigationProperty Name="Departments1" Relationship="Self.FK_Departments_Self" FromRole="Departments" ToRole="Departments1" />
+          <NavigationProperty Name="Departments2" Relationship="Self.FK_Departments_Self" FromRole="Departments1" ToRole="Departments" />
+          <NavigationProperty Name="Workplaces" Relationship="Self.FK_Workplaces_Departments" FromRole="Departments" ToRole="Workplaces" />
+        </EntityType>
+        <EntityType Name="Organization">
+          <Key>
+            <PropertyRef Name="OrganizationID" />
+          </Key>
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NameShort" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Adress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdressFact" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DirectorFIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Fax" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="SOUTid" Type="Int64" Nullable="false" />
+          <Property Name="INN" Type="Int64" Nullable="false" />
+          <Property Name="OKPO" Type="Int64" Nullable="false" />
+          <Property Name="OKOGU" Type="Int64" Nullable="false" />
+          <Property Name="OKVED" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="OKTMO" Type="Int64" Nullable="false" />
+          <Property Name="OGRN" Type="Int64" Nullable="false" />
+          <Property Name="KPP" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Departments" Relationship="Self.FK_Departments_Organization" FromRole="Organization" ToRole="Departments" />
+        </EntityType>
+        <EntityType Name="Workplaces">
+          <Key>
+            <PropertyRef Name="WorkplaceID" />
+          </Key>
+          <Property Name="WorkplaceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Workplaces" FromRole="Workplaces" ToRole="Employees" />
+          <NavigationProperty Name="Departments" Relationship="Self.FK_Workplaces_Departments" FromRole="Workplaces" ToRole="Departments" />
+        </EntityType>
+        <Association Name="FK_Employees_Workplaces">
+          <End Role="Workplaces" Type="Self.Workplaces" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workplaces">
+              <PropertyRef Name="WorkplaceID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="WorkplaceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Departments_Organization">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+          <End Role="Departments" Type="Self.Departments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="OrganizationID" />
+            </Principal>
+            <Dependent Role="Departments">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Departments_Self">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+          <End Role="Departments1" Type="Self.Departments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Departments1">
+              <PropertyRef Name="ParrentDepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Workplaces_Departments">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="1" />
+          <End Role="Workplaces" Type="Self.Workplaces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Workplaces">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SOUTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employees" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" />
+          <EntitySet Name="Organization" EntityType="Self.Organization" />
+          <EntitySet Name="Workplaces" EntityType="Self.Workplaces" />
+          <AssociationSet Name="FK_Employees_Workplaces" Association="Self.FK_Employees_Workplaces">
+            <End Role="Workplaces" EntitySet="Workplaces" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Departments_Organization" Association="Self.FK_Departments_Organization">
+            <End Role="Organization" EntitySet="Organization" />
+            <End Role="Departments" EntitySet="Departments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Departments_Self" Association="Self.FK_Departments_Self">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Departments1" EntitySet="Departments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Workplaces_Departments" Association="Self.FK_Workplaces_Departments">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Workplaces" EntitySet="Workplaces" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SOUTModelStoreContainer" CdmEntityContainer="SOUTEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="SOUTModel.Employees">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="WorkplaceID" ColumnName="WorkplaceID" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="SNILS" ColumnName="SNILS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="SOUTModel.Departments">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="ParrentDepartmentID" ColumnName="ParrentDepartmentID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Organization">
+            <EntityTypeMapping TypeName="SOUTModel.Organization">
+              <MappingFragment StoreEntitySet="Organization">
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NameShort" ColumnName="NameShort" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="AdressFact" ColumnName="AdressFact" />
+                <ScalarProperty Name="DirectorFIO" ColumnName="DirectorFIO" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="SOUTid" ColumnName="SOUTid" />
+                <ScalarProperty Name="INN" ColumnName="INN" />
+                <ScalarProperty Name="OKPO" ColumnName="OKPO" />
+                <ScalarProperty Name="OKOGU" ColumnName="OKOGU" />
+                <ScalarProperty Name="OKVED" ColumnName="OKVED" />
+                <ScalarProperty Name="OKTMO" ColumnName="OKTMO" />
+                <ScalarProperty Name="OGRN" ColumnName="OGRN" />
+                <ScalarProperty Name="KPP" ColumnName="KPP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Workplaces">
+            <EntityTypeMapping TypeName="SOUTModel.Workplaces">
+              <MappingFragment StoreEntitySet="Workplaces">
+                <ScalarProperty Name="WorkplaceID" ColumnName="WorkplaceID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,14 @@
+﻿<Window x:Class="ITMO.ADO.NET.Control.SOUT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ITMO.ADO.NET.Control.SOUT"
+        mc:Ignorable="d"
+        Title="SOUT" Height="604.8" Width="524">
+    <Grid>
+        <TreeView x:Name="OrganizationTreeView" Margin="0" TreeViewItem.Expanded="OrganizationTreeView_Expanded" 
+                  Loaded="OrganizationTreeView_Loaded" MouseDoubleClick="OrganizationTreeView_MouseDoubleClick" />
+
+    </Grid>
+</Window>
